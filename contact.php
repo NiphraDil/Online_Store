@@ -2,15 +2,33 @@
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $message = $_POST["message"];
+    $name = trim($_POST["name"]);
+    $email = trim($_POST["email"]);
+    $message = trim($_POST["message"]);
+
+    if ($name == "" OR $email == "" OR $message == "") {
+        echo "You must specify all your name, e-mail and message";
+        exit;
+    }
+
+    foreach( $_POST as $value) {
+        if(stripos($value, 'Content-Type:') !== FALSE){
+            echo "There was a problem with the information you entered.";
+            exit;
+        }
+    }
+    // Checking for spam bots and stopping the process if found
+    if ($_POST["address"] != "") {
+        echo "Your form submission has an error";
+        exit;
+    }
+
+    require_once("includes/phpmailer/class.phpmailer.php")
     $email_body = "";
     $email_body = $email_body . "Name: " . $name . "\n";
     $email_body = $email_body . "E-mail: " . $email . "\n";
     $email_body = $email_body . "Message: " . $message;
 
-// TODO: Send Email
 
     header("Location: contact.php?status=thanks");
     exit;
@@ -58,6 +76,15 @@ include("includes/header.php");?>
                             </th>
                             <td>
                                 <textarea name="message" id="message"></textarea>
+                            </td>
+                        </tr>
+                        //Checking for spam bots
+                        <tr style="display: none;">
+                            <th>
+                                <label for="address">Address</label>
+                            </th>
+                            <td>
+                                <input type="text" name="address" id="address">
                             </td>
                         </tr>
                     </table>

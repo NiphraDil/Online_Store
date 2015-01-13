@@ -1,5 +1,7 @@
 <?php
 
+include("Product.php");
+
 function get_list_view_html($product_id, $product) {
     //build HTML output
     $output = "";
@@ -16,6 +18,7 @@ function get_list_view_html($product_id, $product) {
 }
 
 $products = array();
+
 $products[101] = array(
     "name" => "Logo Shirt, Red",
     "price" => 18,
@@ -77,7 +80,20 @@ $products[108] = array(
     "price" => 25,
     "paypal" => "HJ4U4PGP93JJW",
     "sizes" => array("Medium", "Large", "X-Large")
-
 );
 
-?>
+$objectProducts = [];
+
+foreach ($products as $id => $arrayProduct) {
+    $objectProduct = new Product();
+    $objectProduct->setId($id);
+    $objectProduct->setImage($arrayProduct["img"]);
+    $objectProduct->setName($arrayProduct["name"]);
+    $objectProduct->setPaypal($arrayProduct["paypal"]);
+    $objectProduct->setPrice($arrayProduct["price"]);
+    $objectProduct->setSize($arrayProduct["sizes"]);
+    if (! $objectProduct->isExpensive()) {
+        echo "Product is cheap:".$objectProduct->getName()."\n";
+    }
+}
+var_dump($objectProducts);

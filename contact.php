@@ -1,5 +1,4 @@
 <?php
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name = trim($_POST["name"]);
@@ -23,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    require_once("includes/phpmailer/class.phpmailer.php")
+    require_once("includes/phpmailer/class.phpmailer.php");
     $email_body = "";
     $email_body = $email_body . "Name: " . $name . "\n";
     $email_body = $email_body . "E-mail: " . $email . "\n";
